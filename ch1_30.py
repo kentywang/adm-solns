@@ -5,11 +5,7 @@ from collections import deque
 from functools import reduce
 from itertools import combinations
 from math import sqrt, inf
-from random import randint
 from profiler import profile
-
-
-# from memory_profiler import profile
 
 
 def calc_dist(a, b):
@@ -137,51 +133,3 @@ def closest_pair(g):
     total_dist += calc_dist(g[endpt1], g[endpt2])
 
     return vc_deq, total_dist
-
-
-def func_test():
-    graph1 = [(0, 0), (0, 1), (0, -2), (0, 5), (0, -10), (0, 21)]  # shortest is 31 * 2 = 62
-    graph2 = [(-3, 0), (-3, 1), (0, 0), (0, 1), (3, 0), (3, 1)]  # shortest is 6 + 6 + 1 + 1 = 14
-
-    print(nearest_neighbor(graph1))  # expect 1 + 3 + 7 + 15 + 31 + 21 = 78
-    print(nearest_neighbor(graph2))  # expect 9 + sqrt(37) = 15.1
-
-    print(closest_pair(graph1))  # expect 62
-    print(closest_pair(graph2))  # expect 15.1
-
-
-def perf_test():
-    def test_tour_heuristics(n):
-        print(f'\033[0;31mn: {n}\033[0m')
-        graph = [(randint(-n, n), randint(-n, n)) for _ in range(0, n)]
-        print(nearest_neighbor(graph)[1])
-        print(closest_pair(graph)[1])
-
-    test_tour_heuristics(100)
-    test_tour_heuristics(200)
-    test_tour_heuristics(400)
-
-
-# func_test()
-perf_test()
-
-# Results
-# n: 100
-# nearest_neighbor: 4 KiB, 3 ms
-# 2023.768245164767
-# closest_pair: 4272 KiB, 356 ms
-# 2039.4096178628715
-# n: 200
-# nearest_neighbor: 4 KiB, 15 ms
-# 5663.23900541345
-# closest_pair: 11704 KiB, 2821 ms
-# 4814.492834218646
-# n: 400
-# nearest_neighbor: 0 KiB, 65 ms
-# 15298.839718985993
-# closest_pair: 48964 KiB, 23200 ms
-# 14352.34495753338
-
-# Analysis
-# Closest pair returns slightly better results at the cost of much more time and space usage.
-# I'll pass on coming up with my own heuristic, seeing as it already took a while to implement these two.
