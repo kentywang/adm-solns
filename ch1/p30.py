@@ -5,7 +5,6 @@ from collections import deque
 from functools import reduce
 from itertools import combinations
 from math import sqrt, inf
-from profiler import profile
 
 
 def calc_dist(a, b):
@@ -14,7 +13,6 @@ def calc_dist(a, b):
     return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
 
-@profile
 def nearest_neighbor(g):
     unvisiteds = [True] * len(g)
 
@@ -52,7 +50,6 @@ def nearest_neighbor(g):
     return order, total_dist
 
 
-@profile
 def closest_pair(g):
     def pair_pts_from_distinct(vcs):
         """Returns all the valid pair combinations between vertices on the ends of the passed vertex chains"""
