@@ -1,15 +1,24 @@
-from profiler import profile
+from math import inf
 
+# Min palindrome partitions
 
-@profile
-def partition(s):
-    """
-    chip
-    :param s:
-    :return:
-    """
-    from math import inf
+# 9:07 - 9:14, 9:16 memo
+def partition_v1(s):
+    n = len(s)
+    memo = {}
 
+    def go(i, j):
+        if (i, j) in memo: return memo[(i, j)]
+        if i == j: return 0
+        if i+1 == j: return 0 if s[i] == s[j] else 1
+        if go(i+1, j-1) == 0 and s[i] == s[j]: return 0
+        memo[(i, j)] = 1 + min(go(i, j-1), go(i+1, j))
+        return memo[(i, j)]
+
+    return go(0, n-1)
+
+# 9:56
+def partition_v2(s):
     n = len(s)
     r = range(n)
     dp = [[inf for _ in r] for _ in r]
@@ -37,14 +46,9 @@ def partition(s):
     return dp[0][n - 1]
 
 
-def main():
-    assert partition('abdbca') == 3
-    assert partition('cddpd') == 2
-    assert partition('pqr') == 2
-    assert partition('ppp') == 0
-    assert partition('pp') == 0
-    assert partition('p') == 0
-
-
-if __name__ == '__main__':
-    main()
+assert partition_v2('abdbca') == 3
+assert partition_v2('cddpd') == 2
+assert partition_v2('pqr') == 2
+assert partition_v2('ppp') == 0
+assert partition_v2('pp') == 0
+assert partition_v2('p') == 0

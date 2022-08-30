@@ -1,5 +1,5 @@
 from unittest import TestCase
-from p31 import guar_win, gen_tix_v1, gen_tix_v2
+from ch1.p31 import guar_win, gen_tix_v1, gen_tix_v2
 
 
 class GuarWin(TestCase):

@@ -21,7 +21,7 @@ class Profiler:
         gc.collect()
         gc.disable()
 
-π        self.mem_before = get_process_memory()
+        self.mem_before = get_process_memory()
         self.start = time.time()
 
         return self.fn

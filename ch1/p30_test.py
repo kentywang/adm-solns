@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from p30 import nearest_neighbor, closest_pair
+from ch1.p30 import nearest_neighbor, closest_pair
 
 graph1 = [(0, 0), (0, 1), (0, -2), (0, 5), (0, -10), (0, 21)]  # shortest is 31 * 2 = 62
 graph2 = [(-3, 0), (-3, 1), (0, 0), (0, 1), (3, 0), (3, 1)]  # shortest is 6 + 6 + 1 + 1 = 14
