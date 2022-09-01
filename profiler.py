@@ -2,6 +2,7 @@ import gc
 import time
 import os
 import psutil
+from copy import deepcopy
 
 from util import reset_color, blue, purple
 
@@ -14,8 +15,10 @@ def get_process_memory():
 
 
 class Profiler:
-    def __init__(self, fn):
+    def __init__(self, fn, args):
         self.fn = fn
+        # allows call to mutate arg and not affect next tests that use same arg
+        self.args = deepcopy(args)
 
     def __enter__(self):
         gc.collect()
@@ -24,7 +27,7 @@ class Profiler:
         self.mem_before = get_process_memory()
         self.start = time.time()
 
-        return self.fn
+        return lambda: self.fn(self.args)
 
     def __exit__(self, *exc_info):
         elapsed_time = time.time() - self.start
