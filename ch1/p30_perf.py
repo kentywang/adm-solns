@@ -14,10 +14,10 @@ def test_perf():
         g = randgridsz(n)
         print(f'\033[0;31mn: {n}\033[0m')
 
-        with Profiler(nearest_neighbor) as f:
-            nn = f(g)[1]
-        with Profiler(closest_pair) as f:
-            cp = f(g)[1]
+        with Profiler(nearest_neighbor, g) as f:
+            nn = f()[1]
+        with Profiler(closest_pair, g) as f:
+            cp = f()[1]
 
         results.append((int(nn), int(cp)))
 
