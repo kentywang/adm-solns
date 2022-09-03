@@ -1,3 +1,7 @@
+import os
+
+import psutil
+
 red = "\033[0;31m"
 dark_green = "\033[0;32m"
 orange = "\033[0;33m"
@@ -30,3 +34,10 @@ darken = "\033[2m"
 invisible = '\033[08m'
 reverse_color = '\033[07m'
 reset_color = '\033[0m'
+
+
+def get_process_memory():
+    process = psutil.Process(os.getpid())
+    mem_info = process.memory_info()
+
+    return mem_info.rss

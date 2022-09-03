@@ -1,17 +1,8 @@
 import gc
 import time
-import os
-import psutil
 from copy import deepcopy
 
-from util import reset_color, blue, purple
-
-
-def get_process_memory():
-    process = psutil.Process(os.getpid())
-    mem_info = process.memory_info()
-
-    return mem_info.rss
+from util import reset_color, blue, purple, get_process_memory
 
 
 class Profiler:

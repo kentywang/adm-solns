@@ -19,7 +19,6 @@ def test_perf():
 
         assert v1 == v2 == v3
 
-test_func()
 test_perf()
 
 # v1: O(1) space, O(n^2) time

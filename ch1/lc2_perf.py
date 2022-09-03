@@ -2,6 +2,7 @@ from random import randint
 
 from ch1.lc2 import ListNode, rotate_right_v1, rotate_right_v2
 from profiler import Profiler
+from profilerv2 import ProfilerV2
 from util import red, reset_color, yellow
 
 
@@ -52,52 +53,32 @@ def test_perf():
     for k in [2000, 4000, 8000]:
         print(f'{yellow}k: {k}{reset_color}')
         # Varying k, keeping n constant
-        with Profiler(rotate_right_v1) as f:
+        with Profiler(rotate_right_v1, head, k) as f:
             for _ in range(1000):
-                f(head, k)
+                f()
 
-        with Profiler(rotate_right_v2) as f:
+        with Profiler(rotate_right_v2, head, k) as f:
             for _ in range(1000):
-                f(head, k)
+                f()
+
+
+def test_perf2():
+    with ProfilerV2(rotate_right_v1, var='n', start=500, reps=1000, mapper=make_list, clone=False) as (f, n):
+        f(n, 500)
+
+    with ProfilerV2(rotate_right_v1, var='k', start=1000, reps=1000) as (f, k):
+        f(make_list(100), k)
+
+    with ProfilerV2(rotate_right_v2, var='n', start=30, reps=1000, mapper=make_list, clone=False) as (f, n):
+        f(n, 500)
+
+    with ProfilerV2(rotate_right_v2, var='k', start=100000, reps=1000) as (f, k):
+        f(make_list(100), k)
 
 
 test_func()
-test_perf()
+# test_perf()
+test_perf2()
 
 # rotate_right_v1: O(n) space, O(n+k) time
-# rotate_right_v1: O(1) space, O(n) time
-
-# TODO setup profiler to also print n count and include more variables for multivariable O(n).
-# Also show factor increase compared to previous run
-
-# Ideal output:
-
-# rotate_right_v1:
-#   n: 2000
-#     3000ms           2000 KiB
-#   n: 4000
-#     6000ms  (2x)     3000 KiB   (1.5x)
-#   n: 8000
-#     11000ms (1.9x)   4000 KiB   (1.25x)
-
-#   k: 2000
-#     3000ms           2000 KiB
-#   k: 4000
-#     6000ms  (2x)     3000 KiB   (1.5x)
-#   k: 8000
-#     11000ms (1.9x)   4000 KiB   (1.25x)
-
-# rotate_right_v2:
-#   n: 2000
-#     3000ms           2000 KiB
-#   n: 4000
-#     6000ms  (2x)     3000 KiB   (1.5x)
-#   n: 8000
-#     11000ms (1.9x)   4000 KiB   (1.25x)
-
-#   k: 2000
-#     3000ms           2000 KiB
-#   k: 4000
-#     6000ms  (2x)     3000 KiB   (1.5x)
-#   k: 8000
-#     11000ms (1.9x)   4000 KiB   (1.25x)
+# rotate_right_v2: O(1) space, O(n) time
