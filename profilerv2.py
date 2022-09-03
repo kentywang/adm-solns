@@ -1,10 +1,11 @@
+# TODO look into divergent behavior depending on clone=True or False
 import gc
-from dataclasses import dataclass
 import time
 from copy import deepcopy
+from dataclasses import dataclass
 
-from util import red, get_process_memory, yellow, purple, reset_color, blue, light_green, orange, bright_purple, \
-    bright_white, dark_green, purple_back, grey, bright_blue, dark_blue, bright_red
+from util import red, get_process_memory, yellow, purple, reset_color, blue, light_green, orange, bright_white, \
+    bright_blue, bright_red
 
 
 @dataclass
