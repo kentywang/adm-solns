@@ -1,5 +1,6 @@
 # 9/1/22 8:30
 # v1: 11:00
+# v2: 9/2 11:59π
 from typing import Optional
 
 
@@ -49,4 +50,43 @@ def rotate_right_v1(head: Optional[ListNode], k: int) -> Optional[ListNode]:
 
 
 def rotate_right_v2(head: Optional[ListNode], k: int) -> Optional[ListNode]:
-    pass
+    """
+    Notice only 3 operations for call of any n or k.
+        - Set list[-1] node to point to list[0]
+        - Set head to list[-k]
+        - Unset list[-k-1]'s .next pointer
+
+    To reduce operations further, notice:
+        - When k > n, we can set k := k - n for the same result
+    """
+    def ll_len(listnode):
+        length = 0
+        while listnode:
+            length += 1
+            listnode = listnode.next
+        return length
+
+    if not head:
+        return head
+
+    n = ll_len(head)
+    k %= n
+
+    if k == 0:
+        return head
+
+    # get tail, l[-k] (newhead) and l[-k-1] (newtail)
+    curr = head
+    i = 0
+    while i < n:
+        if i == n - k - 1:  # Notice when using offsets (k) with list lengths, we don't need to factor in 0-indexing
+            newtail = curr
+            newhead = curr.next
+        if i == n - 1:
+            tail = curr
+        curr = curr.next
+        i += 1
+
+    tail.next = head  # link tail to head (makes a ring)
+    newtail.next = None  # sever a connection to form a new tail (returns it to a finite list)
+    return newhead  # return front end of that new list
