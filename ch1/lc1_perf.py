@@ -1,6 +1,6 @@
 from random import randint
 
-from ch1.lc1 import dailyTemperatures_v1, dailyTemperatures_v2, dailyTemperatures_lc
+from ch1.lc1 import daily_temperatures_v1, daily_temperatures_v2, daily_temperatures_lc
 from profiler import Profiler
 from util import reset_color, red
 
@@ -10,11 +10,11 @@ def test_perf():
         temps = list(randint(0, 100) for _ in range(n))
         print(f'{red}n: {n}{reset_color}')
 
-        with Profiler(dailyTemperatures_v1, temps) as f:
+        with Profiler(daily_temperatures_v1, temps) as f:
             v1 = f()
-        with Profiler(dailyTemperatures_v2, temps) as f:
+        with Profiler(daily_temperatures_v2, temps) as f:
             v2 = f()
-        with Profiler(dailyTemperatures_lc, temps) as f:
+        with Profiler(daily_temperatures_lc, temps) as f:
             v3 = f()
 
         assert v1 == v2 == v3

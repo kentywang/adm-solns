@@ -5,7 +5,7 @@ from itertools import islice, takewhile
 import sys
 
 
-def dailyTemperatures_v1(t: list[int]) -> list[int]:
+def daily_temperatures_v1(t: list[int]) -> list[int]:
     for i, t1 in enumerate(t):  # original stream
         days_til_hotter = 0
         offset_str = islice(t, i, sys.maxsize)
@@ -21,7 +21,7 @@ def dailyTemperatures_v1(t: list[int]) -> list[int]:
     return t
 
 
-def dailyTemperatures_v2(t: list[int]) -> list[int]:
+def daily_temperatures_v2(t: list[int]) -> list[int]:
     for i in range(len(t)):
         day_ct_til_hotter = 1
         for j in range(i + 1, len(t)):
@@ -40,7 +40,7 @@ def dailyTemperatures_v2(t: list[int]) -> list[int]:
 # Use stack to hold uncalculated indices. Repeatedly pop those indices off
 # when a bigger element is encountered (so 1 big element could potentially
 # pop off several elements), and process them.
-def dailyTemperatures_lc(T: list[int]) -> list[int]:
+def daily_temperatures_lc(T: list[int]) -> list[int]:
     stack = []
     for i, t in enumerate(T):
         while stack and T[stack[-1]] < t:

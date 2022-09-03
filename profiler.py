@@ -15,10 +15,10 @@ def get_process_memory():
 
 
 class Profiler:
-    def __init__(self, fn, args=None):
+    def __init__(self, fn, *args):
         self.fn = fn
         # allows call to mutate arg and not affect next tests that use same arg
-        self.args = deepcopy(args) if args else None
+        self.args = deepcopy(args)
 
     def __enter__(self):
         gc.collect()
@@ -28,7 +28,7 @@ class Profiler:
         self.start = time.time()
 
         if self.args:
-            return lambda: self.fn(self.args)
+            return lambda: self.fn(*self.args)
 
         return self.fn
 
