@@ -37,8 +37,8 @@ class MetricsCollector:
         self.start = time.time()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.metrics.space_usage = (get_process_memory() - self.mem_before)
-        self.metrics.time_usage = (time.time() - self.start)
+        self.metrics.space_usage = (get_process_memory() - self.mem_before) // 2 ** 10
+        self.metrics.time_usage = int((time.time() - self.start) * 10 ** 6)
 
         gc.enable()
 
@@ -83,7 +83,7 @@ class MetricsPrinter:
 
         self.prev_metrics.space_usage, self.prev_metrics.time_usage = self.metrics.space_usage, self.metrics.time_usage
 
-        print("{}{}: {: <8}{}{: >12} KiB  {}{: <8}{}{: >10} ms  {}{: <8}{}".format(
+        print("{}{}: {: <8}{}{: >12} KiB  {}{: <8}{}{: >10} µs  {}{: <8}{}".format(
             self.ncolor,
             self.var,
             self.n_ct,
@@ -108,7 +108,7 @@ class ProfilerV2:
         cls.color = bright_blue if cls.color == bright_red else bright_red
         return cls.color
 
-    def __init__(self, fn, var, start, reps=1, mapper=(lambda x: x), clone=True):
+    def __init__(self, fn, start, reps=1, var='n', mapper=(lambda x: x), clone=True):
         """
         Profiler takes configurations, including the function you want to profile,
         and returns that function wrapped in a way such that the second element of
@@ -116,9 +116,9 @@ class ProfilerV2:
         function to vary within the tests.
 
         :param fn: Function to profile
-        :param var: Variable name to print (i.e. "n")
         :param start: The seed value to use
         :param reps: Number of times to repeat for each run
+        :param var: Variable name to print (i.e. "n")
         :param mapper: Function that maps each value to the desired value to pass to fn
         :param clone: Bool for whether to deep copy argument before tests. Set to false if arg is too deeply nested.
         """
