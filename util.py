@@ -1,4 +1,5 @@
 import os
+from inspect import getsource
 
 import psutil
 
@@ -41,3 +42,11 @@ def get_process_memory():
     mem_info = process.memory_info()
 
     return mem_info.rss
+
+
+def asserter(fn, ev):
+    x = fn()
+    if x != ev:
+        print(f'{red}{getsource(fn)[17:-2]}{reset_color}')
+        print(f'Returned:\t{x}')
+        print(f'Expected:\t{ev}')
