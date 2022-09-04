@@ -19,6 +19,9 @@ class DoublyListNode(ListNode):
 
 
 def rotate_right_v1(head: Optional[ListNode], k: int) -> Optional[ListNode]:
+    """
+    O(n) space, O(n+k) time
+    """
     # both these conditions necessary for below code not to trip an exception
     # their speeding up the computation is just a side effect
     if not head:
@@ -58,7 +61,10 @@ def rotate_right_v2(head: Optional[ListNode], k: int) -> Optional[ListNode]:
 
     To reduce operations further, notice:
         - When k > n, we can set k := k - n for the same result
+
+    O(1) space, O(n) time
     """
+
     def ll_len(listnode):
         length = 0
         while listnode:

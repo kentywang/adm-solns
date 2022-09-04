@@ -79,6 +79,3 @@ def test_perf2():
 test_func()
 # test_perf()
 test_perf2()
-
-# rotate_right_v1: O(n) space, O(n+k) time
-# rotate_right_v2: O(1) space, O(n) time

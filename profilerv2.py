@@ -4,8 +4,8 @@ import time
 from copy import deepcopy
 from dataclasses import dataclass
 
-from util import red, get_process_memory, yellow, purple, reset_color, blue, light_green, orange, bright_white, \
-    bright_blue, bright_red
+from util import red, get_process_memory, yellow, purple, reset_color, blue, light_green, orange, bright_blue, \
+    bright_red
 
 
 @dataclass
@@ -25,7 +25,7 @@ class Identifier:
 class MetricsCollector:
     def __init__(self, metrics: Metrics):
         """
-        :param metrics: Objcet to be filled by MetricCollector on exit. Will contain 'space_usage' and 'time_usage'
+        :param metrics: Object to be filled by MetricCollector on exit. Will contain 'space_usage' and 'time_usage'
         """
         self.metrics = metrics
 
@@ -37,8 +37,8 @@ class MetricsCollector:
         self.start = time.time()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.metrics.space_usage = (get_process_memory() - self.mem_before) // 2 ** 10
-        self.metrics.time_usage = int((time.time() - self.start) * 10 ** 3)
+        self.metrics.space_usage = (get_process_memory() - self.mem_before)
+        self.metrics.time_usage = (time.time() - self.start)
 
         gc.enable()
 
@@ -64,6 +64,9 @@ class MetricsPrinter:
         self.prev_metrics = prev_metrics
 
     def __enter__(self):
+        """
+        :return: a Metrics object that must be passed to the MetricsCollector to fill
+        """
         return self.metrics
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -84,11 +87,11 @@ class MetricsPrinter:
             self.ncolor,
             self.var,
             self.n_ct,
-            bright_white,
+            reset_color,
             self.metrics.space_usage,
             self.get_color_from_factor(space_factor),
             space_factor_str,
-            bright_white,
+            reset_color,
             self.metrics.time_usage,
             self.get_color_from_factor(time_factor),
             time_factor_str,
@@ -106,6 +109,19 @@ class ProfilerV2:
         return cls.color
 
     def __init__(self, fn, var, start, reps=1, mapper=(lambda x: x), clone=True):
+        """
+        Profiler takes configurations, including the function you want to profile,
+        and returns that function wrapped in a way such that the second element of
+        return, a token, can be used to identify which argument of the profiled
+        function to vary within the tests.
+
+        :param fn: Function to profile
+        :param var: Variable name to print (i.e. "n")
+        :param start: The seed value to use
+        :param reps: Number of times to repeat for each run
+        :param mapper: Function that maps each value to the desired value to pass to fn
+        :param clone: Bool for whether to deep copy argument before tests. Set to false if arg is too deeply nested.
+        """
         self.fn = fn
         self.var = var
         self.n_list = map(lambda x: (x, mapper(x)), map(lambda x: start * 2 ** x, range(4)))
