@@ -116,3 +116,33 @@ def hackerlandRadioTransmitters_dp_builtin_cache(x, k):
 
     x.sort()
     return go(0, 0, 0)
+
+
+def hackerlandRadioTransmitters_hr(x, k):
+    """
+    Single iteration, inspired by HackerRank answers
+
+    O(n log n) time (or O(n) if already sorted), O(1) space
+    """
+    x.sort()
+
+    n = len(x)
+    extended_range = 0  # up to which node position is covered?
+    ct = 0
+    i = 0
+
+    while i < n:
+        if extended_range < x[i]:
+            ct += 1  # need a new transmitter
+
+            cover_range = x[i] + k  # range assuming worst case (installing on earliest node)
+            while i < n and x[i] <= cover_range:
+                # increment pointer as far as k units to find furthest node to install on,
+                # maximizing cover and thus minimizing ct
+                extended_range = x[i] + k  # range assuming better case (installing on further node)
+                i += 1
+            # pointer i now outside extended range
+        else:
+            i += 1
+
+    return ct
