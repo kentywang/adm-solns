@@ -108,7 +108,7 @@ class ProfilerV2:
         cls.color = bright_blue if cls.color == bright_red else bright_red
         return cls.color
 
-    def __init__(self, fn, start, reps=1, var='n', mapper=(lambda x: x), clone=True):
+    def __init__(self, fn, start, step=(lambda x: 2 * x), count=4, reps=1, var='n', mapper=(lambda x: x), clone=True):
         """
         Profiler takes configurations, including the function you want to profile,
         and returns that function wrapped in a way such that the second element of
@@ -116,18 +116,24 @@ class ProfilerV2:
         function to vary within the tests.
 
         :param fn: Function to profile
-        :param start: The seed value to use
-        :param reps: Number of times to repeat for each run
+        :param start: The seed n to use for argument
+        :param step: Function that generates next n
+        :param count: Times to step the previous n
+        :param reps: Number of times to repeat for each step
         :param var: Variable name to print (i.e. "n")
-        :param mapper: Function that maps each value to the desired value to pass to fn
+        :param mapper: Function that maps each n to the desired argument to pass to fn
         :param clone: Bool for whether to deep copy argument before tests. Set to false if arg is too deeply nested.
         """
         self.fn = fn
         self.var = var
-        self.n_list = map(lambda x: (x, mapper(x)), map(lambda x: start * 2 ** x, range(4)))
         self.ntoken = Identifier()
         self.reps = reps
         self.clone = deepcopy if clone else lambda x: x
+        self.n_list = []
+        n = start
+        for c in range(count):
+            self.n_list.append((n, mapper(n)))
+            n = step(n)
 
     def __enter__(self):
         def wrapper(*args, **kwargs):
