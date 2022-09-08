@@ -1,6 +1,6 @@
 # 9/1/22 8:30
 # v1: 11:00
-# v2: 9/2 11:59π
+# v2: 9/2 11:59
 from typing import Optional
 
 
