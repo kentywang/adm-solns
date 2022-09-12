@@ -1,0 +1,64 @@
+2022-09-10 16:25:53.717199000000 [25551(ThreadId 17)] ERROR APP - user error (<getModule> loaded module can not find from path. </Users/kentywang/Documents/coding/haskproj/app/Main.hs> [("Main","/Users/kentywang/Documents/coding/haskproj/test/Spec.hs")])
+2022-09-10 16:30:36.105125000000 [25932(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-10 16:30:36.146060000000 [25932(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-10 16:30:39.425117000000 [25932(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 16:33:22.599196000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 16:33:28.425723000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 16:33:30.021889000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 16:33:31.606584000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 16:33:35.236998000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 16:33:36.795433000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 16:33:37.435620000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 16:33:38.016910000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 16:33:38.719752000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 16:33:39.399111000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 16:33:39.846028000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 16:33:40.368584000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 16:33:40.894621000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 16:33:41.658882000000 [26033(ThreadId 17)] ERROR APP - already at the beginning of the history
+2022-09-10 17:58:27.852783000000 [27780(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-10 17:58:27.899196000000 [27780(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-10 17:58:33.799471000000 [27780(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 17:59:25.334264000000 [27897(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-10 17:59:25.380496000000 [27897(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-10 17:59:30.301794000000 [27897(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 18:02:13.862149000000 [28097(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 18:05:53.836846000000 [28613(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 18:10:28.618056000000 [28930(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 18:13:25.688900000000 [29040(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-10 18:13:25.740820000000 [29040(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-10 18:13:26.286869000000 [29040(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 18:13:52.818157000000 [29166(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 18:14:24.139708000000 [29276(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 18:14:46.441125000000 [29393(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 18:15:11.395663000000 [29491(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 18:16:06.342218000000 [29601(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-10 18:16:06.395915000000 [29601(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-10 18:16:11.407385000000 [29601(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 18:16:18.968173000000 [29705(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 18:16:22.723769000000 [29705(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 18:16:23.691524000000 [29705(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 18:16:24.275832000000 [29705(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 18:16:24.511609000000 [29705(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 18:16:24.715523000000 [29705(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 18:16:24.895326000000 [29705(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 18:16:25.670781000000 [29705(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 18:16:26.178390000000 [29705(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 18:16:26.481678000000 [29705(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2022-09-10 18:16:31.616201000000 [29810(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 18:16:41.453627000000 [29914(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 18:17:05.571442000000 [30018(ThreadId 16)] WARNING REQUEST - unsupported request command. {"command":"stepOut","arguments":{"threadId":0},"type":"request","seq":16}
+2022-09-10 18:17:10.326659000000 [30018(ThreadId 16)] WARNING REQUEST - unsupported request command. {"command":"stepOut","arguments":{"threadId":0},"type":"request","seq":17}
+2022-09-10 18:17:11.676198000000 [30018(ThreadId 16)] WARNING REQUEST - unsupported request command. {"command":"stepOut","arguments":{"threadId":0},"type":"request","seq":18}
+2022-09-10 18:28:48.015062000000 [30780(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-10 18:28:48.058640000000 [30780(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-10 18:28:53.308138000000 [30877(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 18:29:00.009517000000 [30975(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 18:29:11.148604000000 [31074(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 21:23:04.411661000000 [32857(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-10 22:15:16.769391000000 [35866(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-09-11 08:23:11.662664000000 [41551(ThreadId 16)] CRITICAL REQUEST - invalid HANDLE. eof.
+2022-09-11 08:25:17.729243000000 [41743(ThreadId 16)] CRITICAL REQUEST - invalid HANDLE. eof.
+2022-09-11 08:35:32.650424000000 [42351(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-11 08:35:32.683886000000 [42351(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2022-09-11 08:35:33.733275000000 [42351(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
