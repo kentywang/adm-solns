@@ -50,3 +50,5 @@ def asserter(fn, ev):
         print(f'{red}{getsource(fn)[17:-2]}{reset_color}')
         print(f'Returned:\t{x}')
         print(f'Expected:\t{ev}')
+    else:
+        print(f'{dark_green}{getsource(fn)[17:-2]}{reset_color}')
