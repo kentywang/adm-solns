@@ -1,40 +1,34 @@
+from collections.abc import Generator
 from itertools import zip_longest
 
 from util import asserter
 
 
-def int_list(x: int) -> list[int]:
+def digits(x: int) -> Generator[int]:
     """
     Time: O(log n) because base 10 digits
-    Space: O(log n) ''
+    Space: O(1)
     """
-    remainders = []
     dividend = x
 
     while dividend != 0:
         remainder = dividend % 10
         dividend //= 10
-        remainders.append(remainder)
-
-    return remainders
+        yield remainder
 
 
 def carry_ops(a: int, b: int) -> int:
     """
     Time: O(log n)
-    Space: O(log n), but could probably be O(1) if int_list was streamed
+    Space: O(1)
     """
     carries = 0
     currently_carrying = 0
     # convert number to array of nums using modulo (reverse order is preferred)
-    a_list, b_list = int_list(a), int_list(b)
+    a_digits, b_digits = digits(a), digits(b)
     # zip arrays to compare
-    for x, y in zip_longest(a_list, b_list):
-        if x is None:
-            x = 0
-        if y is None:
-            y = 0
-        if x + y + currently_carrying >= 10:
+    for x, y in zip_longest(a_digits, b_digits):
+        if (x if x else 0) + (y if y else 0) + currently_carrying >= 10:
             carries += 1
             currently_carrying = 1
         else:
@@ -42,9 +36,9 @@ def carry_ops(a: int, b: int) -> int:
     return carries
 
 
-asserter(lambda: int_list(1), [1])
-asserter(lambda: int_list(100), [0, 0, 1])
-asserter(lambda: int_list(123), [3, 2, 1])
+asserter(lambda: list(digits(1)), [1])
+asserter(lambda: list(digits(100)), [0, 0, 1])
+asserter(lambda: list(digits(123)), [3, 2, 1])
 asserter(lambda: carry_ops(123, 456), 0)
 asserter(lambda: carry_ops(555, 555), 3)
 asserter(lambda: carry_ops(123, 594), 1)
