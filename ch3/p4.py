@@ -4,7 +4,7 @@ from util import asserter
 class Stack:
     def __init__(self):
         self.minimums = []
-        self.stack: list = []
+        self.stack = []
 
     def push(self, x):
         self.stack.append(x)
