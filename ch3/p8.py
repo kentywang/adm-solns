@@ -147,4 +147,5 @@ moves: list[Coord] = [
 ttt = TicTacToe(3)
 asserter(lambda: ttt.push(moves[0], moves[1]), False)
 asserter(lambda: ttt.push(*moves[2:4]), False)
-asserter(lambda: ttt.push(*moves[4:]), True)
+asserter(lambda: ttt.push(*moves[4:7]), False)
+asserter(lambda: ttt.push(moves[7]), True)
