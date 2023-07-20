@@ -23,16 +23,16 @@ def tree(ct: int) -> Node:
     helper fn to generate tree with a given number of nodes
     """
     arr = deque()
-    root = Node(random.randint)
+    root = Node(random.randint(0, 1000))
     ct -= 1
 
     arr.append(root)
     while arr and ct > 0:
         curr = arr.popleft()
-        curr.left = Node(random.randint)
+        curr.left = Node(random.randint(0, 1000))
         ct -= 1
         if ct > 0:
-            curr.right = Node(random.randint)
+            curr.right = Node(random.randint(0, 1000))
             ct -= 1
 
         arr.append(curr.left)
