@@ -8,6 +8,10 @@ class DLLNode:
         self.prev = previous
         self.next = DLLNode(vals[1:], self) if len(vals) > 1 else None
 
+    def link_node(self, next_node):
+        self.next = next_node
+        next_node.prev = self
+
     def __eq__(self, other):
         return all([
             self.value == other.value,
@@ -51,13 +55,12 @@ def merge(a: BSTNode, b: BSTNode) -> DLLNode:
     """
 
     def add_to_tail_and_advance(val, hd, tl, iterat):
-        x = DLLNode([val])
+        new_node = DLLNode([val])
         if tl:
-            tl.next = x
-            x.prev = tl
+            tl.link_node(new_node)
         else:
-            hd = x
-        return hd, x, next(iterat, None)
+            hd = new_node
+        return hd, new_node, next(iterat, None)
 
     head = None
     tail = None
@@ -78,7 +81,7 @@ def merge(a: BSTNode, b: BSTNode) -> DLLNode:
     return head
 
 
-# print(list(merge(bst(5), bst(5))))
+print(list(merge(bst(5), bst(5))))
 
 asserter(lambda: check_sorted(DLLNode([1])), True)
 asserter(lambda: check_sorted(DLLNode([1, 2])), True)
