@@ -46,33 +46,39 @@ def merge(a: BSTNode, b: BSTNode) -> DLLNode:
     """
     Iterate thru each BST, then walk thru both lists simulanteously to perform merge.
 
-    Time: O(2(m+n)) (one iteration to get list for each BST, another to merge)
-    Space: O(mn) (not including return value)
-
-    Theoretical optimal: O(m+n)
+    Time: O(m+n)
     Space: O(1) (not including return value)
     """
-    ia, ib = iter(a), iter(b)
-    result = []
 
+    def add_to_tail_and_advance(val, hd, tl, iterat):
+        x = DLLNode([val])
+        if tl:
+            tl.next = x
+            x.prev = tl
+        else:
+            hd = x
+        return hd, x, next(iterat, None)
+
+    head = None
+    tail = None
+    ia, ib = iter(a), iter(b)
     na = next(ia, None)
     nb = next(ib, None)
+
     while na is not None or nb is not None:
         if na is None:
-            result.append(nb)
-            nb = next(ib, None)
+            head, tail, nb = add_to_tail_and_advance(nb, head, tail, ib)
         elif nb is None:
-            result.append(na)
-            na = next(ia, None)
+            head, tail, na = add_to_tail_and_advance(na, head, tail, ia)
         elif na <= nb:
-            result.append(na)
-            na = next(ia, None)
+            head, tail, na = add_to_tail_and_advance(na, head, tail, ia)
         else:
-            result.append(nb)
-            nb = next(ib, None)
+            head, tail, nb = add_to_tail_and_advance(nb, head, tail, ib)
 
-    return DLLNode(result)
+    return head
 
+
+# print(list(merge(bst(5), bst(5))))
 
 asserter(lambda: check_sorted(DLLNode([1])), True)
 asserter(lambda: check_sorted(DLLNode([1, 2])), True)
@@ -82,7 +88,6 @@ asserter(lambda: check_sorted(DLLNode([1, 2, 3, 4, 4])), True)
 asserter(lambda: check_sorted(DLLNode([1, 2, 3, 5, 4])), False)
 asserter(lambda: DLLNode([1]), DLLNode([1]))
 asserter(lambda: list(DLLNode([1, 2, 3, 4])), [1, 2, 3, 4])
-# print(list(merge(bst(5), bst(5))))
 asserter(lambda: check_sorted(merge(bst(1), bst(1))), True)
 asserter(lambda: check_sorted(merge(bst(15), bst(15))), True)
 asserter(lambda: check_sorted(merge(bst(50), bst(50))), True)
