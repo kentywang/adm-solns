@@ -6,14 +6,14 @@ from itertools import pairwise
 from util import asserter
 
 
-class Node:
+class BSTNode:
     def __init__(self, key):
         self.key = key
         self.left = None
         self.right = None
 
     def verify_balance(self) -> bool:
-        def go(node: Node, minbound=~sys.maxsize, maxbound=sys.maxsize) -> bool:
+        def go(node: BSTNode, minbound=~sys.maxsize, maxbound=sys.maxsize) -> bool:
             if minbound < node.key < maxbound:
                 left_ok = True if not node.left else go(node.left, minbound, node.key)
                 right_ok = True if not node.right else go(node.right, node.key, maxbound)
@@ -23,7 +23,28 @@ class Node:
 
         return go(self)
 
+    def __iter__(self):
+        self.check_next = [self]
+        return self
+
+    def __next__(self):
+        while self.check_next:
+            x = self.check_next.pop()
+            if isinstance(x, int):
+                return x
+            else:
+                if x.right:
+                    self.check_next.append(x.right)
+                self.check_next.append(x.key)
+                if x.left:
+                    self.check_next.append(x.left)
+        else:
+            raise StopIteration
+
     def to_list(self) -> list:
+        """
+        Different than __iter__ and __next__ methods, because this returns a list of nodes, not ints.
+        """
         arr = []
 
         def go(node):
@@ -38,24 +59,24 @@ class Node:
         return arr
 
     def __repr__(self) -> str:
-        return '\n'.join(f'{i + 1} : {e.key}' for i, e in enumerate(self.to_list()))
+        return '\n'.join(f'{i + 1} : {e}' for i, e in enumerate(list(self)))
 
 
-def nonbst(ct: int) -> Node:
+def nonbst(ct: int) -> BSTNode:
     """
     helper fn to generate tree with a given number of nodes
     """
     arr = deque()
-    root = Node(random.randint(0, 1000))
+    root = BSTNode(random.randint(0, 1000))
     ct -= 1
 
     arr.append(root)
     while arr and ct > 0:
         curr = arr.popleft()
-        curr.left = Node(random.randint(0, 1000))
+        curr.left = BSTNode(random.randint(0, 1000))
         ct -= 1
         if ct > 0:
-            curr.right = Node(random.randint(0, 1000))
+            curr.right = BSTNode(random.randint(0, 1000))
             ct -= 1
 
         arr.append(curr.left)
@@ -64,12 +85,12 @@ def nonbst(ct: int) -> Node:
     return root
 
 
-def bst(ct: int) -> Node:
+def bst(ct: int) -> BSTNode:
     arbitrary_lower_bound_for_generated_vals = ~sys.maxsize // 1000000000000000
     arbitrary_upper_bound_for_generated_vals = sys.maxsize // 1000000000000000
     arr = deque()
     bounds = (None, None)
-    root = Node(100)
+    root = BSTNode(100)
     ct -= 1
 
     arr.append((root, bounds))
@@ -78,7 +99,7 @@ def bst(ct: int) -> Node:
         left_node_bounds = (minbound if not minbound else minbound + 1, curr.key - 1)
 
         left_key = random.randint(left_node_bounds[0] or arbitrary_lower_bound_for_generated_vals, left_node_bounds[1])
-        curr.left = Node(left_key)
+        curr.left = BSTNode(left_key)
         ct -= 1
         arr.append((curr.left, left_node_bounds))
 
@@ -86,14 +107,14 @@ def bst(ct: int) -> Node:
             right_node_bounds = (curr.key + 1, maxbound if not maxbound else maxbound - 1)
             right_key = random.randint(right_node_bounds[0],
                                        right_node_bounds[1] or arbitrary_upper_bound_for_generated_vals)
-            curr.right = Node(right_key)
+            curr.right = BSTNode(right_key)
             ct -= 1
             arr.append((curr.right, right_node_bounds))
 
     return root
 
 
-def swap_nodes(tree: Node, i: int, j: int) -> Node:
+def swap_nodes(tree: BSTNode, i: int, j: int) -> BSTNode:
     """
     :param tree:
     :param i: ith node in tree to swap, with nodes in sorted order
@@ -135,7 +156,7 @@ def swap_nodes(tree: Node, i: int, j: int) -> Node:
     return tree
 
 
-def fix_bad_nodes(tree: Node) -> Node:
+def fix_bad_nodes(tree: BSTNode) -> BSTNode:
     """
     Brute force, for each node that violates its BFS bounds, try swapping with every other node.
     Each violation takes up to n-1 swaps, where each swap needs another n ops to verify the tree is BST.
@@ -147,11 +168,11 @@ def fix_bad_nodes(tree: Node) -> Node:
     THIS DOESN'T WORK WITH NODES SWAPPED WITH GRANDPARENTS
     """
 
-    first_bad_node: Node | None = None
-    first_bad_node_parent: Node | None = None
-    second_bad_node: Node | None = None
+    first_bad_node: BSTNode | None = None
+    first_bad_node_parent: BSTNode | None = None
+    second_bad_node: BSTNode | None = None
 
-    def go(node: Node, parent: Node | None, minbound=~sys.maxsize, maxbound=sys.maxsize):
+    def go(node: BSTNode, parent: BSTNode | None, minbound=~sys.maxsize, maxbound=sys.maxsize):
         nonlocal first_bad_node
         nonlocal first_bad_node_parent
         nonlocal second_bad_node
@@ -177,7 +198,7 @@ def fix_bad_nodes(tree: Node) -> Node:
     return tree
 
 
-def fix_bad_nodes_2(tree: Node) -> Node:
+def fix_bad_nodes_2(tree: BSTNode) -> BSTNode:
     """
     When two nodes swap in a monotonically increasing sequence, the one node (the smaller) will be identified first
     when it will be preceded by a smaller value, a violation of the order. The smaller node can be identified when
@@ -218,7 +239,7 @@ asserter(lambda: a_bst.verify_balance(), False)
 
 fix_bad_nodes_2(a_bst)
 asserter(lambda: a_bst.verify_balance(), True)
-
+# print(bst(10))
 asserter(lambda: fix_bad_nodes_2(swap_nodes(bst(15), 12, 13)).verify_balance(), True)
 asserter(lambda: fix_bad_nodes_2(swap_nodes(bst(15), 8, 6)).verify_balance(), True)
 asserter(lambda: fix_bad_nodes_2(swap_nodes(bst(15), 1, 4)).verify_balance(), True)
