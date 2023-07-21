@@ -1,52 +1,8 @@
-from ch3.p13 import BSTNode, bst
+from ch3.common import BST, bst, check_sorted, DLL
 from util import asserter
 
 
-class DLLNode:
-    def __init__(self, vals: list[int], previous=None):
-        self.value = vals[0]
-        self.prev = previous
-        self.next = DLLNode(vals[1:], self) if len(vals) > 1 else None
-
-    def link_node(self, next_node):
-        self.next = next_node
-        next_node.prev = self
-
-    def __eq__(self, other):
-        return all([
-            self.value == other.value,
-            self.prev == other.prev,
-            self.next == other.next
-        ])
-
-    def __iter__(self):
-        self.curr = self
-        return self
-
-    def __next__(self):
-        if self.curr:
-            result = self.curr.value
-            self.curr = self.curr.next
-            return result
-        else:
-            raise StopIteration
-
-
-def check_sorted(n: DLLNode) -> bool:
-    prev = None
-    curr = n
-
-    while curr:
-        if prev and prev.value > curr.value:
-            return False
-        else:
-            prev = curr
-            curr = curr.next
-
-    return True
-
-
-def merge(a: BSTNode, b: BSTNode) -> DLLNode:
+def merge(a: BST, b: BST) -> DLL:
     """
     Iterate thru each BST, then walk thru both lists simulanteously to perform merge.
 
@@ -55,7 +11,7 @@ def merge(a: BSTNode, b: BSTNode) -> DLLNode:
     """
 
     def add_to_tail_and_advance(val, hd, tl, iterat):
-        new_node = DLLNode([val])
+        new_node = DLL([val])
         if tl:
             tl.link_node(new_node)
         else:
@@ -83,14 +39,14 @@ def merge(a: BSTNode, b: BSTNode) -> DLLNode:
 
 print(list(merge(bst(5), bst(5))))
 
-asserter(lambda: check_sorted(DLLNode([1])), True)
-asserter(lambda: check_sorted(DLLNode([1, 2])), True)
-asserter(lambda: check_sorted(DLLNode([2, 1])), False)
-asserter(lambda: check_sorted(DLLNode([1, 2, 3, 4, 5])), True)
-asserter(lambda: check_sorted(DLLNode([1, 2, 3, 4, 4])), True)
-asserter(lambda: check_sorted(DLLNode([1, 2, 3, 5, 4])), False)
-asserter(lambda: DLLNode([1]), DLLNode([1]))
-asserter(lambda: list(DLLNode([1, 2, 3, 4])), [1, 2, 3, 4])
+asserter(lambda: check_sorted(DLL([1])), True)
+asserter(lambda: check_sorted(DLL([1, 2])), True)
+asserter(lambda: check_sorted(DLL([2, 1])), False)
+asserter(lambda: check_sorted(DLL([1, 2, 3, 4, 5])), True)
+asserter(lambda: check_sorted(DLL([1, 2, 3, 4, 4])), True)
+asserter(lambda: check_sorted(DLL([1, 2, 3, 5, 4])), False)
+asserter(lambda: DLL([1]), DLL([1]))
+asserter(lambda: list(DLL([1, 2, 3, 4])), [1, 2, 3, 4])
 asserter(lambda: check_sorted(merge(bst(1), bst(1))), True)
 asserter(lambda: check_sorted(merge(bst(15), bst(15))), True)
 asserter(lambda: check_sorted(merge(bst(50), bst(50))), True)
