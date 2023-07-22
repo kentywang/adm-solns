@@ -1,21 +1,7 @@
 from math import floor, log2
 
-from ch3.common import BST, max_depth
+from ch3.common import max_depth, unbalanced_bst, BST
 from util import asserter
-
-
-def unbalanced_bst(ct: int) -> BST:
-    curr_ct = 1
-    curr, root = None, None
-    while curr_ct <= ct:
-        x = BST(curr_ct)
-        if root is None:
-            root = x
-        if curr:
-            curr.right = x
-        curr = x
-        curr_ct += 1
-    return root
 
 
 def balanced(tree: BST) -> BST:

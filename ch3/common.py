@@ -185,3 +185,17 @@ def check_sorted(n: DLL) -> bool:
             curr = curr.next
 
     return True
+
+
+def unbalanced_bst(ct: int) -> BST:
+    curr_ct = 1
+    curr, root = None, None
+    while curr_ct <= ct:
+        x = BST(curr_ct)
+        if root is None:
+            root = x
+        if curr:
+            curr.right = x
+        curr = x
+        curr_ct += 1
+    return root
