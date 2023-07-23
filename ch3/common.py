@@ -1,6 +1,12 @@
 import random
 import sys
 from collections import deque
+from enum import Enum
+
+
+class Side(Enum):
+    LEFT = 1
+    RIGHT = 2
 
 
 class BTree:
@@ -45,11 +51,66 @@ class BTree:
         return arr
 
     def __repr__(self) -> str:
-        return '\n'.join(f'{i + 1} : {e}' for i, e in enumerate(list(self)))
+        return '  '.join(f'{e}' for i, e in enumerate(list(self)))
 
 
 class BST(BTree):
-    pass
+    def insert(self, val):
+        curr = self
+        while curr:
+            if val == curr.key:
+                raise ValueError("No duplicates allowed in BST")
+            elif val > curr.key:
+                if curr.right:
+                    curr = curr.right
+                else:
+                    curr.right = BST(val)
+                    break
+            else:
+                if curr.left:
+                    curr = curr.left
+                else:
+                    curr.left = BST(val)
+                    break
+        return self
+
+    def delete(self, val, parent=None, last_side=None):
+        if val < self.key and self.left:
+            self.left.delete(val, self, Side.LEFT)
+        elif val > self.key and self.right:
+            self.right.delete(val, self, Side.RIGHT)
+        elif self.key == val:
+            if not self.left and not self.right:  # leaf
+                if not parent:
+                    raise ValueError("This BST implementation does not support empty BSTs.")
+                if last_side == Side.RIGHT:
+                    parent.right = None
+                else:
+                    parent.left = None
+            elif self.left and not self.right:  # 1 child
+                self.key = self.left.key
+                self.left = None
+            elif self.right and not self.left:  # 1 child
+                self.key = self.right.key
+                self.right = None
+            elif self.left and self.right:  # 2 children
+                succ = self.right.minimum()
+                self.key = succ
+                self.right.delete(succ, self, Side.RIGHT)
+        else:
+            raise ValueError("Value not in BST.")
+
+    def minimum(self):
+        curr = self
+        while curr.left:
+            curr = curr.left
+        return curr.key
+
+    def maximum(self):
+        curr = self
+        while curr.right:
+            curr = curr.right
+        return curr.key
 
 
 def btree(ct: int) -> BTree:
@@ -144,7 +205,7 @@ def is_bst(tree: BTree) -> bool:
 
 
 class DLL:
-    def __init__(self, vals: list[int], previous=None):
+    def __init__(self, vals: list[any], previous=None):
         self.value = vals[0]
         self.prev = previous
         self.next = DLL(vals[1:], self) if len(vals) > 1 else None
