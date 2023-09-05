@@ -9,6 +9,13 @@ class Solution:
 
     Verdict: trickier than usual palindrome question because of ignored non-alphanumerics.
     Kinda strange that I have to do another invariant validation within the while loop.
+
+    EDIT: Oh, I could've just done this to simplify it slightly:
+        while l < r and not self.alphanum(s[l]):
+            l += 1
+        while l < r and not self.alphanum(s[r]):
+            r -= 1
+        if s[l].lower() != s[r].lower():
     """
 
     def isPalindrome(self, s: str) -> bool:
