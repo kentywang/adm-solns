@@ -20,3 +20,12 @@ class Solution:
 asserter(lambda: Solution().hammingWeight(11), 3)  # ...1011
 asserter(lambda: Solution().hammingWeight(128), 1)  # ...10000000
 asserter(lambda: Solution().hammingWeight(4294967293), 31)  # ...11111111111111111111111111111101
+
+# This is more terse, but what a &= a-1 does is remove a 1-digit from a. We repeat this until we run out of 1-digits, and
+# so the number of repetitions is the number of 1-digits.
+# def hammingWeight(self, n: int) -> int:
+#     res = 0
+#     while n:
+#         n &= n - 1
+#         res += 1
+#     return res
