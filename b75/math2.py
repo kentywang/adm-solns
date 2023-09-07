@@ -6,6 +6,8 @@ from util import asserter
 """
 Time: O(mn)
 Space: O(mn) (for return array)
+
+Verdict: Pretty easy, actually.
 """
 
 
