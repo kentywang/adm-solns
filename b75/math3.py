@@ -9,7 +9,7 @@ Iterate thru matrix, and identify the row and column indices that will be zeroed
 Time: O(mn)
 Space: O(m + n)
 
-Not the optimal solution though. That involves storing intermediate data within the array (along with one other var), I believe.
+Not the optimal solution though. That involves storing intermediate data within the array, I believe.
 """
 
 
