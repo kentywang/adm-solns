@@ -13,8 +13,8 @@ class Node:
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
         """
-        Time: O(n)
-        Space: O(n)
+        Time: O(vertices + edges) because we'll call dfs() for each edge, and we'll do the full work of the dfs function for each vertex.
+        Space: O(vertices)
 
         Wow, this one became very elegant, but it took a while to realize to what I didn't
         actually need.
