@@ -44,6 +44,17 @@ class Solution:
 
         return curr_max
 
+    # Online solution
+    def maxSubArray(self, nums: List[int]) -> int:
+        res = nums[0]
+        total = 0
+
+        for n in nums:
+            total += n
+            res = max(res, total)
+            total = max(0, total)
+        return res
+
 
 asserter(lambda: Solution().maxSubArray([8, -19, 5, -4, 20]), 21)
 asserter(lambda: Solution().maxSubArray([2, -1, 1, 1]), 3)
