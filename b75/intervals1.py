@@ -2,7 +2,7 @@
 import sys
 from typing import List
 
-from util import asserter
+from profilerv2 import ProfilerV2
 
 
 class Solution:
@@ -53,7 +53,42 @@ class Solution:
             intervals.pop()
             return intervals
 
+    def insert2(
+            self, intervals: List[List[int]], newInterval: List[int]
+    ) -> List[List[int]]:
+        """
+        Online solution
+        """
+        res = []
 
-asserter(lambda: Solution().insert([[1, 3], [6, 9]], [2, 5]), [[1, 5], [6, 9]])
-asserter(lambda: Solution().insert([[1, 2], [3, 5], [6, 7], [8, 10], [12, 16]], [4, 8]), [[1, 2], [3, 10], [12, 16]])
-asserter(lambda: Solution().insert([[1, 5]], [2, 7]), [[1, 7]])
+        for i in range(len(intervals)):
+            if newInterval[1] < intervals[i][0]:
+                res.append(newInterval)
+                return res + intervals[i:]
+            elif newInterval[0] > intervals[i][1]:
+                res.append(intervals[i])
+            else:
+                newInterval = [
+                    min(newInterval[0], intervals[i][0]),
+                    max(newInterval[1], intervals[i][1]),
+                ]
+        res.append(newInterval)
+        return res
+
+
+# asserter(lambda: Solution().insert([[1, 3], [6, 9]], [2, 5]), [[1, 5], [6, 9]])
+# asserter(lambda: Solution().insert([[1, 2], [3, 5], [6, 7], [8, 10], [12, 16]], [4, 8]), [[1, 2], [3, 10], [12, 16]])
+# asserter(lambda: Solution().insert([[1, 5]], [2, 7]), [[1, 7]])
+
+
+with ProfilerV2(Solution().insert2, var='n', start=100, step=(lambda x: x * 10), reps=1,
+                mapper=lambda x: list([y, y + 1] for y in range(0, x, 2))) as (f, n):
+    f(n, [~sys.maxsize + 1, sys.maxsize - 1])
+
+with ProfilerV2(Solution().insert, var='n', start=100, step=(lambda x: x * 10), reps=1,
+                mapper=lambda x: list([y, y + 1] for y in range(0, x, 2))) as (f, n):
+    f(n, [~sys.maxsize + 1, sys.maxsize - 1])
+
+"""
+Interesting, same space complexity. I expected online solution to be worse. I guess compiler optimization. 
+"""
