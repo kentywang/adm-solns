@@ -5,7 +5,7 @@ from typing import List
 
 class Solution:
     """
-    Time (caching): O(min(length of nums, value of nums))
+    Time (caching): O(n^2)
     Time (no cache): O(value of nums ** length of nums)
     Space: O(length of nums)
     """
