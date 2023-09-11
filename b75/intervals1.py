@@ -83,11 +83,11 @@ class Solution:
 
 with ProfilerV2(Solution().insert2, var='n', start=100, step=(lambda x: x * 10), reps=1,
                 mapper=lambda x: list([y, y + 1] for y in range(0, x, 2))) as (f, n):
-    f(n, [~sys.maxsize + 1, sys.maxsize - 1])
+    f(n, [~sys.maxsize + 1, ~sys.maxsize + 2])
 
 with ProfilerV2(Solution().insert, var='n', start=100, step=(lambda x: x * 10), reps=1,
                 mapper=lambda x: list([y, y + 1] for y in range(0, x, 2))) as (f, n):
-    f(n, [~sys.maxsize + 1, sys.maxsize - 1])
+    f(n, [~sys.maxsize + 1, ~sys.maxsize + 2])
 
 """
 Interesting, same space complexity. I expected online solution to be worse. I guess compiler optimization. 
