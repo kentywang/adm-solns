@@ -20,7 +20,7 @@ class Solution:
             adjlist[a].add(b)
             adjlist[b].add(a)
 
-        # if we checked a node, in a valid tree we'll never see it again
+        # undirected, validating that it's noncyclical
         checked = set()  # to check for cycles.
 
         def dfs(i, prev=None):
