@@ -18,6 +18,8 @@ class Solution:
         n = 1 case : no reversals necessary at all
 
         47 min solution
+
+        okay, this was a stupid way. I could've never reversed it in the first place. and just did two forward passes)
         """
 
         def reverse(node):
