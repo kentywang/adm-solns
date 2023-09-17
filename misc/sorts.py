@@ -26,6 +26,9 @@ def selectionsortV2(nums):
 
 
 def bubblesort(nums):
+    """
+    stable
+    """
     for i in range(len(nums), 0, -1):
         for j in range(i - 1):
             if nums[j] > nums[j + 1]:
