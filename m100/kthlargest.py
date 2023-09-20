@@ -9,7 +9,8 @@ Verdict: Couldn't even pass LC's tests because Lomuto doesn't handle duplicates 
 
 Observations:
 Time            : space
-- O(n log k)    : O(k)      with heap (trivial)
+- O(k log n)    : O(n)      with n-sized heap (trivial)
+- O(n log k)    : O(k)      with k-sized heap
 - O(n)          : O(1)      using quickselect
 
 """
@@ -24,7 +25,7 @@ class Solution:
             pivot = nums[y]  # pick right most val as pivot
             i = x  # left pointer, kept on the leftmost value bigger than the pivot, only advances after a swap
             for j in range(x, y):  # right pointer
-                if pivot >= nums[j]:  # found a value at j to put in the left partition, so swap with i
+                if nums[j] <= pivot:  # found a value at j to put in the left partition, so swap with i
                     nums[i], nums[j] = nums[j], nums[i]
                     i += 1
 
