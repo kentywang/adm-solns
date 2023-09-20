@@ -60,9 +60,8 @@ class Solution:
 
         def parser(tokens):
             # also shortens
-            from collections import deque
 
-            dq = deque([])  # empty means just root dir
+            stack = []  # empty means just root dir
 
             # start at the second token
             for dir in tokens:
@@ -71,13 +70,13 @@ class Solution:
                     pass
 
                 elif dir == '..':
-                    if dq:
-                        dq.pop()
+                    if stack:
+                        stack.pop()
 
                 else:
-                    dq.append(dir)
+                    stack.append(dir)
 
-            return dq
+            return stack
 
         tokens = lexer(path)
         ll = parser(tokens)
