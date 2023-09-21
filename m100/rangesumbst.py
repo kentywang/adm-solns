@@ -45,4 +45,28 @@ class Solution:
                 return dfs(curr.left)
 
         return dfs(root)
-# ----------------------------------------------[7, 15], curr=32, val=
+
+    # ----------------------------------------------[7, 15], curr=32, val=
+
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+
+        def dfs(curr):
+            if not curr:
+                return 0
+
+            val = curr.val
+            acc = 0
+
+            # explore if there might be a change a child is in range
+            if low < val:
+                acc += dfs(curr.left)
+            if val < high:
+                acc += dfs(curr.right)
+
+            # within; add
+            if low <= val <= high:
+                acc += val
+
+            return acc
+
+        return dfs(root)
