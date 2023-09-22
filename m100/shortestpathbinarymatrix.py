@@ -1,6 +1,8 @@
 """
-20:45 -
-Directional BFS
+Coding      20:45 - 21:20 (35m)
+Debugging   21:20 - 22:00 (40m)
+
+Directional BFS     Beats 87.38%of users with Python3
 Time:   O(mn)
 Space:  O(mn)
 """
@@ -25,9 +27,10 @@ class Solution:
         seen1 = dict()
         seen2 = dict()
 
+        # add all 8 possible vectors around neighbor
+        adj_directions = list(filterfalse(lambda x: x == (0, 0), product([-1, 0, 1], repeat=2)))
+
         def neighbors(x, y, seen):
-            # add all 8 possible vectors around neighbor
-            adj_directions = filterfalse(lambda x: x == (0, 0), product([-1, 0, 1], repeat=2))
             # get neighbor coords from adding vectors to passed coord
             direction_coords = [(a + p, b + q) for (a, b), (p, q) in product([(x, y)], adj_directions)]
             # filter for validity, if open, and if already seen
@@ -55,7 +58,7 @@ class Solution:
 
             for a, b in neighbors(u, v, seen2):
                 if (a, b) in seen1:
-                    return visited2 + seen2[(a, b)]
+                    return visited2 + seen1[(a, b)]
 
                 endq.append((a, b, visited2 + 1))
                 seen2[(a, b)] = visited2 + 1
