@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+
+
 class Heap:
     """
     Max heap
@@ -50,3 +53,44 @@ class Heap:
                 self.q[i], self.q[c] = self.q[c], self.q[i]
                 self._siftdown(c)
                 return
+
+
+@dataclass
+class DSUElement:
+    root: str
+    weight = 1
+
+
+class DSU:
+    def __init__(self):
+        self.parent = {}
+
+    def union_sets(self, x, y):
+        a = self.find_root(x)
+        b = self.find_root(y)
+
+        if a != b:
+            if self.parent[a].weight > self.parent[b].weight:
+                self.parent[b].root = self.parent[a].root
+                self.parent[a].weight += self.parent[b].weight
+            else:
+                self.parent[a].root = self.parent[b].root
+                self.parent[b].weight += self.parent[a].weight
+
+    def find_root(self, x):
+        if x not in self.parent:
+            self.parent[x] = DSUElement(x)
+
+        if self.parent[x].root == x:
+            return x
+
+        self.parent[x].root = self.find_root(self.parent[x].root)
+        return self.parent[x].root
+
+
+dsu = DSU()
+dsu.union_sets('a', 'b')
+dsu.union_sets('c', 'b')
+dsu.union_sets('d', 'c')
+dsu.union_sets('b', 'k')
+print(dsu.find_root('d'))
