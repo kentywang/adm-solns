@@ -88,31 +88,6 @@ def myheapsort(xs):
 
 
 # 17:18 - 17:42 (24m, while looking at previous code for Lomuto)
-def quicksort(xs):
-    """
-    Unstable, in-place
-    """
-
-    def partition(i, j):  # Lomuto
-        partn = i  # partition point; moves leftward after each swap of a smaller element into its left
-        for k in range(i, j):
-            if xs[k] < xs[j]:  # j is the selected pivot index
-                xs[k], xs[partn] = xs[partn], xs[k]
-                partn += 1
-        xs[partn], xs[j] = xs[j], xs[partn]
-
-        return partn
-
-    def recurse(i, j):
-        if i >= j:
-            return
-
-        k = partition(i, j)
-        recurse(i, k - 1)
-        recurse(k + 1, j)
-
-    recurse(0, len(xs) - 1)
-    return xs
 
 
 def quickselect(xs, k):
