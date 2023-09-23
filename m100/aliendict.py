@@ -65,12 +65,12 @@ class Solution:
         visiting = set()
 
         def dfs(v):
-            if v in visiting:
-                raise CyclicException  # cyclical since we retraversed an ongoing chain
             if v in visited:
                 return  # just a subchain we've already explored, no-op
+            
+            if v in visiting:
+                raise CyclicException  # cyclical since we retraversed an ongoing chain
 
-            visited.add(v)
             visiting.add(v)
 
             if v in adj:
@@ -79,6 +79,7 @@ class Solution:
 
             order.appendleft(v)
             visiting.remove(v)
+            visited.add(v)
 
         try:
             for cxn in adj:
