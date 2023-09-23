@@ -40,18 +40,19 @@ class Heap:
 
         candidates = []
 
-        if child1 >= len(self.q):
+        if child1 >= len(self.q):  # no left child
             return
-        if child2 >= len(self.q):
+        if child2 >= len(self.q):  # no right child, but left child
             candidates.append(child1)
         else:
+            # prioritize bigger child to compare with, as they should rise up
             candidates.extend([child1, child2] if self.q[child2] > self.q[child1] else [child2, child1])
 
         while candidates:
             c = candidates.pop()
             if self.q[c] > self.q[i]:
                 self.q[i], self.q[c] = self.q[c], self.q[i]
-                self._siftdown(c)
+                self._siftdown(c)  # continue sifting down the same element
                 return
 
 

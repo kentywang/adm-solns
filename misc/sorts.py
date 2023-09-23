@@ -1,12 +1,13 @@
-import random
 from collections import deque
 from heapq import heappush, heappop
 
 from misc.datastructs import Heap
-from profilerv2 import ProfilerV2
 
 
 def selectionsort(nums):
+    """
+    unstable (unless using LL), in-place
+    """
     for i in range(0, len(nums)):
         curr_min = i
         for j in range(i + 1, len(nums)):
@@ -27,7 +28,7 @@ def selectionsortV2(nums):
 
 def bubblesort(nums):
     """
-    stable
+    stable, in-place
     """
     for i in range(len(nums), 0, -1):
         for j in range(i - 1):
@@ -38,6 +39,9 @@ def bubblesort(nums):
 
 
 def insertionsort(nums):
+    """
+    stable, in-place
+    """
     for i in range(1, len(nums)):
         j = i
         val = nums[j]
@@ -55,6 +59,9 @@ def insertionsort(nums):
 
 
 def heapsort(xs):
+    """
+    unstable, but can be done in-place (this doesn't though)
+    """
     h = []
     for x in xs:
         heappush(h, x)
@@ -65,6 +72,9 @@ def heapsort(xs):
 
 
 def myheapsort(xs):
+    """
+    unstable, but can be done in-place (this doesn't though)
+    """
     h = Heap()
     d = deque()
 
@@ -77,34 +87,94 @@ def myheapsort(xs):
     return d
 
 
-print(insertionsort([3, 7, 2, 5, 1, 6, 2, 8]))
+# 17:18 - 17:42 (24m, while looking at previous code for Lomuto)
+def quicksort(xs):
+    """
+    Unstable, in-place
+    """
 
-with ProfilerV2(selectionsort, var='n', start=100,
-                mapper=lambda x: random.sample(range(0, x), x)
-                ) as (f, n):
-    f(n)
+    def partition(i, j):  # Lomuto
+        partn = i  # partition point; moves leftward after each swap of a smaller element into its left
+        for k in range(i, j):
+            if xs[k] < xs[j]:  # j is the selected pivot index
+                xs[k], xs[partn] = xs[partn], xs[k]
+                partn += 1
+        xs[partn], xs[j] = xs[j], xs[partn]
 
-with ProfilerV2(selectionsortV2, var='n', start=100,
-                mapper=lambda x: random.sample(range(0, x), x)
-                ) as (f, n):
-    f(n)
+        return partn
 
-with ProfilerV2(bubblesort, var='n', start=100,
-                mapper=lambda x: random.sample(range(0, x), x)
-                ) as (f, n):
-    f(n)
+    def recurse(i, j):
+        if i >= j:
+            return
 
-with ProfilerV2(insertionsort, var='n', start=100,
-                mapper=lambda x: random.sample(range(0, x), x)
-                ) as (f, n):
-    f(n)
+        k = partition(i, j)
+        recurse(i, k - 1)
+        recurse(k + 1, j)
 
-with ProfilerV2(heapsort, var='n', start=100,
-                mapper=lambda x: random.sample(range(0, x), x)
-                ) as (f, n):
-    f(n)
+    recurse(0, len(xs) - 1)
+    return xs
 
-with ProfilerV2(myheapsort, var='n', start=100,
-                mapper=lambda x: random.sample(range(0, x), x)
-                ) as (f, n):
-    f(n)
+
+def quickselect(xs, k):
+    def partition(i, j):
+        pivot = j
+        slow = i
+        for fast in range(i, j):
+            if xs[fast] < xs[pivot]:
+                xs[fast], xs[slow] = xs[slow], xs[fast]
+                slow += 1
+
+        xs[pivot], xs[slow] = xs[slow], xs[pivot]
+        return slow
+
+    i, j = 0, len(xs) - 1
+
+    while True:
+        p = partition(i, j)
+
+        if p == k:
+            return xs[p]
+        if k < p:
+            j = p - 1
+        else:  # p < k
+            i = p + 1
+
+
+print(quickselect([3, 7, 2, 5, 1, 6, 1, 2, 8], 8))
+
+print(quicksort([3, 7, 2, 5, 1, 6, 1, 2, 8]))
+
+# with ProfilerV2(selectionsort, var='n', start=100,
+#                 mapper=lambda x: random.sample(range(0, x), x)
+#                 ) as (f, n):
+#     f(n)
+#
+# with ProfilerV2(selectionsortV2, var='n', start=100,
+#                 mapper=lambda x: random.sample(range(0, x), x)
+#                 ) as (f, n):
+#     f(n)
+#
+# with ProfilerV2(bubblesort, var='n', start=100,
+#                 mapper=lambda x: random.sample(range(0, x), x)
+#                 ) as (f, n):
+#     f(n)
+#
+# with ProfilerV2(insertionsort, var='n', start=100,
+#                 mapper=lambda x: random.sample(range(0, x), x)
+#                 ) as (f, n):
+#     f(n)
+#
+# with ProfilerV2(heapsort, var='n', start=100,
+#                 mapper=lambda x: random.sample(range(0, x), x)
+#                 ) as (f, n):
+#     f(n)
+#
+# with ProfilerV2(myheapsort, var='n', start=100,
+#                 mapper=lambda x: random.sample(range(0, x), x)
+#                 ) as (f, n):
+#     f(n)
+#
+# with ProfilerV2(quicksort, var='n', start=100,
+#                 mapper=lambda x: random.sample(range(0, x), x)
+#                 ) as (f, n):
+#     f(n)
