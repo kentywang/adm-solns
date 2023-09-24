@@ -1,4 +1,5 @@
 # 207. Course Schedule
+from collections import defaultdict
 from typing import List
 
 from util import asserter
@@ -33,6 +34,35 @@ class Solution:
             else:
                 return False
 
+    def canFinishV2(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        """
+        A simplification, using the blunt hammer known as Topological Sort DFS.
+        Realized numCourses is not needed. Any courses not in the graph are trivially completable,
+        so we can ignore them.
+        """
+        if not prerequisites:
+            return True
 
-asserter(lambda: Solution().canFinish(2, [[1, 0], [0, 1]]), False)
-asserter(lambda: Solution().canFinish(2, [[1, 0]]), True)
+        graph = defaultdict(set)
+        for b, a in prerequisites:
+            _ = graph[b]  # create key for b if DNE so we don't expand accidentally our graph later
+            graph[a].add(b)
+
+        visited = {}  # course -> bool. If false, still visiting, so is cycle
+
+        def dfs(a):
+            if a in visited:
+                return visited[a]
+
+            visited[a] = False
+            finishable = all(dfs(b) for b in graph[a])
+            visited[a] = True
+
+            return finishable
+
+        return all(dfs(course) for course in graph)
+
+
+asserter(lambda: Solution().canFinishV2(2, [[1, 0], [0, 1]]), False)
+asserter(lambda: Solution().canFinishV2(2, [[1, 0]]), True)
+asserter(lambda: Solution().canFinishV2(5, [[1, 4], [2, 4], [3, 1], [3, 2]]), True)
