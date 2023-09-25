@@ -17,6 +17,7 @@ Options:
   - or just deal with offset
 
 """
+from typing import List
 
 
 class Solution:
@@ -41,14 +42,56 @@ class Solution:
     # Done in 20m
 
     # improvement, based on online soln
-    def findBuildings(self, heights: List[int]) -> List[int]:
-        n = len(heights)
-        highest = 0
-        res = []
-        # reverse traverse the list, upping the highest var to the max whenever encountered
-        for i in range(n - 1, -1, -1):
-            if heights[i] > highest:
-                res.append(i)
-                highest = heights[i]
+    # def findBuildings(self, heights: List[int]) -> List[int]:
+    #     n = len(heights)
+    #     highest = 0
+    #     res = []
+    #     # reverse traverse the list, upping the highest var to the max whenever encountered
+    #     for i in range(n - 1, -1, -1):
+    #         if heights[i] > highest:
+    #             res.append(i)
+    #             highest = heights[i]
 
-        return reversed(res)
+    def findBuildingsV2(self, heights: List[int]) -> List[int]:
+        tallest = 0
+        res = []
+        for i in range(len(heights) - 1, -1, -1):
+            if heights[i] > tallest:
+                res.append(i)
+                tallest = heights[i]
+        res.reverse()
+        return res
+
+    """
+    For case when we have ocean on both side and want the indices that have some ocean view
+    """
+
+    def findBuildingsVariation(self, heights: List[int]) -> List[int]:
+        lo, hi = 0, len(heights) - 1
+        lmax, rmax = heights[lo], heights[hi]
+        leftviews, rightviews = [lo], [hi]
+
+        while lo < hi:
+            if heights[lo] <= heights[hi]:
+                if heights[lo] > lmax:
+                    leftviews.append(lo)
+                    lmax = heights[lo]
+                lo += 1
+            else:
+                if heights[hi] > rmax:
+                    rightviews.append(hi)
+                    rmax = heights[hi]
+                hi -= 1
+
+        if heights[lo] == heights[hi]:
+            if heights[lo] > lmax:
+                leftviews.append(lo)
+            if heights[hi] > rmax:
+                rightviews.append(hi)
+
+        return leftviews, list(reversed(rightviews))
+
+
+Solution().findBuildingsV2([4, 2, 3, 1])
+
+print(Solution().findBuildingsVariation([1, 0, 3, 2, 3, 2]))

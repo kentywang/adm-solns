@@ -37,6 +37,32 @@ class Solution:
 
         return list(list(r) for r in res)
 
+    def threeSumV3(self, nums: List[int]) -> List[List[int]]:
+        n = len(nums)
+        nums.sort()
+        res = []
+        for i in range(n - 2):
+            # skip dupes in 1st position
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+            j = i + 1
+            k = n - 1
+            while j < k:
+                # skip dupes in 2nd position
+                if j > i + 1 and nums[j] == nums[j - 1]:
+                    j += 1
+                    continue
+                if nums[i] + nums[j] + nums[k] == 0:
+                    res.append([nums[i], nums[j], nums[k]])
+                    j += 1
+                elif nums[i] + nums[j] + nums[k] > 0:
+                    k -= 1
+                else:
+                    j += 1
 
-x = Solution().threeSum([-1, 0, 1, 2, -1, -4])
+        return res
+
+
+x = Solution().threeSumV3([-1, 0, 1, 2, -1, -4])
+x = Solution().threeSumV3([0, 0, 0, 0])
 print(x)
