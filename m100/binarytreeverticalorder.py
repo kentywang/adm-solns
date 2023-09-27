@@ -92,4 +92,33 @@ class Solution:
                 bfsq.append((node.right, index + 1))
 
         return res
+
+    # 20:40 - 20:54
+
+    def verticalOrder2(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+
+        vals = defaultdict(list)
+
+        def bfs(curr, col):
+            if curr:
+                vals[col].append(curr.val)
+                q.append((curr.left, col - 1))
+                q.append((curr.right, col + 1))
+
+        q = deque([(root, 0)])
+        while q:
+            bfs(*q.popleft())
+
+        colVals = vals.items()
+        mincolvals = min(colVals)
+        res = [[]] * (max(colVals)[0] - mincolvals[0] + 1)
+
+        for col, vals in colVals:
+            res[col - mincolvals[0]] = vals
+
+        # online soln just does below, calcing min_column/max_column during the bfs phase
+        # return [columnTable[x] for x in range(min_column, max_column + 1)]
+        return res
 # -------------------------------> move me! (option (⌥) + up/down)

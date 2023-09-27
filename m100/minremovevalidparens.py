@@ -89,6 +89,29 @@ class Solution:
         return ''.join(char for i, char in enumerate(s) if i not in skippable)
 
 
+"""
+23:24 - 23:32
+much simpler than first go
+"""
+
+
+class Solution:
+    def minRemoveToMakeValid2(self, s: str) -> str:
+        dels = []
+        opens = []
+        for i, ch in enumerate(s):
+            if ch.isalpha():
+                continue
+            if ch == ')':
+                if not opens:
+                    dels.append(i)
+                else:
+                    opens.pop()
+            else:
+                opens.append(i)
+        return [ch for i, ch in enumerate(s) if i not in dels + opens]
+
+
 print(Solution().minRemoveToMakeValid(")((c)d()(l"))
 print(Solution().minRemoveToMakeValid('((((()'))
 

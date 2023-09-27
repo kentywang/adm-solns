@@ -36,5 +36,38 @@ class Solution:
 
         return i == len(word) and j == len(abbr)
 
+    """
+    22:48 - 23:16 (28m; trial and error, with optimization from online soln)
 
-print(Solution().validWordAbbreviation('internationalization', 'i12iz4n'))
+    apple
+         ^
+    5
+    ^
+    """
+
+    def validWordAbbreviation2(self, word: str, abbr: str) -> bool:
+        i = 0
+        j = 0
+
+        while i < len(word) and j < len(abbr):
+            if word[i] == abbr[j]:
+                i += 1
+                j += 1
+            elif abbr[j].isdigit():
+                if abbr[j] == '0':
+                    return False
+                digit = 0
+                # parse number
+                while j < len(abbr) and abbr[j].isdigit():
+                    digit = digit * 10 + int(abbr[j])
+                    j += 1
+                # apply number
+                i += digit
+            else:
+                return False
+
+        return i == len(word) and j == len(abbr)
+
+
+print(Solution().validWordAbbreviation2('internationalization', 'i5a11o1'))
+print(Solution().validWordAbbreviation2('a', '2'))

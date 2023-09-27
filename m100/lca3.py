@@ -39,3 +39,19 @@ class Solution:
             q = q.parent
 
         return q
+
+
+"""
+23:59 - 0:01 (2m)
+"""
+
+
+class Solution:
+    def lowestCommonAncestor2(self, p: 'Node', q: 'Node') -> 'Node':
+        a, b = p, q
+
+        while a != b:
+            a = a.parent if a.parent else q
+            b = b.parent if b.parent else p
+
+        return a

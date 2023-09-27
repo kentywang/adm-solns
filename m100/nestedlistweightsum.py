@@ -74,4 +74,27 @@ class Solution:
         recurse(nestedList, 0)
 
         return sum(v * (i + 1) for i, v in enumerate(depthvals))
+
+
 # ---------------------------------------
+"""
+21:12 - 21:19 (7m)
+Time: O(n)
+Space: O(d)
+"""
+
+
+class Solution:
+    def depthSum(self, nestedList: List[NestedInteger]) -> int:
+        def recurse(depth, arr):
+            ans = 0
+            i = 0
+            while i < len(arr):
+                if arr[i].isInteger():
+                    ans += depth * arr[i].getInteger()
+                else:
+                    ans += recurse(depth + 1, arr[i].getList())
+                i += 1
+            return ans
+
+        return recurse(1, nestedList)

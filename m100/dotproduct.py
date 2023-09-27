@@ -33,30 +33,97 @@ our data struct picks it to iterate on instead of the other, so we don't have to
 """
 from typing import List
 
+#
+#
+# class SparseVector:
+#     def __init__(self, nums: List[int]):
+#         """
+#         Time: O(n)
+#         Space: O(k)
+#         """
+#         self.c = {}
+#         for i, n in enumerate(nums):
+#             if n != 0:
+#                 self.c[i] = n
+#
+#     def dotProduct(self, vec: 'SparseVector') -> int:
+#         # a will be smaller or equal in size to b
+#         a, b = (self.c, vec.c) if len(self.c) <= len(vec.c) else (vec.c, self.c)
+#
+#         acc = 0
+#         for i in a:
+#             if i in b:
+#                 acc += (a[i] * b[i])
+#
+#         return acc
+
+"""
+20:30 - 20:48   (18m, soln 1)
+- 21:04         (16m, soln 2)
+
+- build sparse vector: time O(n) : space O(k)
+If about equal sparseness:
+- dot product (linear scan): time O(m + n) : space O(1)
+
+Better if only 1 is sparse: let m be denser one, linear scan on sparser n
+- dot product (binary search): time O(n lg m) : space O(1)
+
+Verdict: binary search way is slightly tricky to implement
+"""
+
 
 class SparseVector:
     def __init__(self, nums: List[int]):
-        """
-        Time: O(n)
-        Space: O(k)
-        """
-        self.c = {}
-        for i, n in enumerate(nums):
-            if n != 0:
-                self.c[i] = n
+        self.arr = [e for e in enumerate(nums) if e[1] != 0]
+
+    # # Return the dotProduct of two sparse vectors
+    # def dotProductBothSparse(self, vec: 'SparseVector') -> int:
+    #     x = len(vec.arr)
+    #     y = len(self.arr)
+
+    #     longer, shorter = (vec.arr, self.arr) if x > y else (self.arr, vec.arr)
+
+    #     res = 0
+    #     j = 0
+    #     for i, v in shorter:
+    #         while j < len(longer) and longer[j][0] <= i:
+    #             if longer[j][0] == i:
+    #                 res += v * longer[j][1]
+    #             j += 1
+
+    #     return res
 
     def dotProduct(self, vec: 'SparseVector') -> int:
-        # a will be smaller or equal in size to b
-        a, b = (self.c, vec.c) if len(self.c) <= len(vec.c) else (vec.c, self.c)
+        x = len(vec.arr)
+        y = len(self.arr)
 
-        acc = 0
-        for i in a:
-            if i in b:
-                acc += (a[i] * b[i])
+        longer, shorter = (vec.arr, self.arr) if x > y else (self.arr, vec.arr)
 
-        return acc
+        res = 0
+        lo = 0
+        hi = len(longer) - 1
+
+        for i, v in shorter:
+            saved_lo = lo
+            hi = len(longer) - 1
+            while lo <= hi:
+                mid = (hi + lo) // 2
+                if longer[mid][0] == i:
+                    res += v * longer[mid][1]
+                    lo = mid + 1
+                    break
+                elif longer[mid][0] > i:
+                    hi = mid - 1
+                else:
+                    lo = mid + 1
+            lo = saved_lo
+
+        return res
+
+
 # ------------------------------------->
 # Your SparseVector object will be instantiated and called as such:
-# v1 = SparseVector(nums1)
-# v2 = SparseVector(nums2)
-# ans = v1.dotProduct(v2)
+v1 = SparseVector([0, 0, 0, 0, 0, 0, 3, 0, 0, 3, 0, 0, 0])
+v2 = SparseVector([0, 0, 2, 0, 0, 4, 3, 0, 0, 2, 0, 0, 0])
+ans = v1.dotProduct(v2)
+print(ans)
