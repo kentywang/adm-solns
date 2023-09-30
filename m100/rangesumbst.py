@@ -70,3 +70,72 @@ class Solution:
             return acc
 
         return dfs(root)
+
+
+# 12:14 - 12:54 (40m, interrupted)
+# Time: O(n)
+# Space: O(h)
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+        acc = 0
+
+        def dfs(curr):
+            nonlocal acc
+
+            if not curr:
+                return
+
+            if low <= curr.val <= high:
+                acc += curr.val
+
+            if curr.val < high:
+                dfs(curr.right)
+
+            if low < curr.val:
+                dfs(curr.left)
+
+        dfs(root)
+        return acc
+
+
+# 12:58 - 13:24 (Morris, O(1) space)
+# Time: O(n)
+# Space: O(1)
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+        acc = 0
+        curr = root
+        while curr:
+            if low < curr.val and curr.left:
+                pre = curr.left
+                while pre.right and pre.right != curr:
+                    pre = pre.right
+
+                if pre.right:  # we set this before, so remove it now
+                    pre.right = None
+                else:
+                    pre.right = curr
+                    curr = curr.left
+                    continue
+
+            if low <= curr.val <= high:
+                acc += curr.val
+            if curr.val < high:
+                curr = curr.right
+            else:
+                break
+
+        return acc

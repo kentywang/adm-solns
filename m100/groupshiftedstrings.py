@@ -51,3 +51,17 @@ class Solution:
             groups[t].append(string)
 
         return list(groups.values())
+
+
+# 10:42 - 10:52
+class Solution:
+    def groupStrings(self, strings: List[str]) -> List[List[str]]:
+        dists = defaultdict(list)
+        for s in strings:
+            dist = tuple(
+                (ord(c2) - ord(c1)) if ord(c2) > ord(c1) else (ord(c2) - ord(c1) + 26)
+                for c1, c2 in pairwise(s)
+            )
+            dists[dist].append(s)
+
+        return dists.values()

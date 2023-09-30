@@ -36,67 +36,174 @@ Time: O(n)
 Space: O(1)
 """
 
+#
+# class Solution:
+#     def calculate(self, s: str) -> int:
+#         def tokengen(expr):
+#             i = 0
+#             val = None
+#
+#             while i < len(expr):
+#                 if expr[i].isnumeric():
+#                     if val is None:
+#                         val = 0
+#                     val = val * 10 + int(expr[i])
+#
+#                 elif expr[i] == " ":
+#                     if val is not None:
+#                         yield val
+#                         val = None
+#
+#                 else:  # expr[i] is in '*/-+'
+#                     if val is not None:
+#                         yield val
+#                         val = None
+#                     yield expr[i]
+#
+#                 i += 1
+#
+#             if val is not None:
+#                 yield val
+#
+#         ops = {
+#             '+': lambda a, b: a + b,
+#             '-': lambda a, b: a - b,
+#             '*': lambda a, b: a * b,
+#             '/': lambda a, b: a // b
+#         }
+#
+#         operators = []  # max length one, + or -
+#         operands = []  # max length 2
+#
+#         tokeniter = tokengen(s)
+#         for t in tokeniter:
+#             if type(t) == int:
+#                 # only handled here if previous token was a +- or this is the start
+#                 operands.append(t)
+#             elif t in '+-':
+#                 if operators:
+#                     # apply what's currently on the stack first
+#                     b = operands.pop()
+#                     a = operands.pop()
+#                     tmp = ops[operators.pop()](a, b)
+#                     # add result back to stack
+#                     operands.append(tmp)
+#                 # add op to stack
+#                 operators.append(t)
+#             else:  # / or *
+#                 tmp = ops[t](operands.pop(), next(tokeniter))
+#                 operands.append(tmp)
+#
+#         if operators:
+#             b = operands.pop()
+#             a = operands.pop()
+#             tmp = ops[operators.pop()](a, b)
+#             operands.append(tmp)
+#         return operands[0]
+
+"""
+10:14 - 11:12 (58m)
+
+
+Cases:
+3 + 2 * 2
+3 + 2
+- when see * or /, apply them immediately
+- when see + or -, save first operand & operator
+    - if there's already a saved operand and operator, apply the saved, then save the new 
+    - this will keep our stack O(1)
+- after traversed full expression, apply leftover stack
+"""
+
 
 class Solution:
     def calculate(self, s: str) -> int:
-        def tokengen(expr):
+        def tokenize(expr):
             i = 0
-            val = None
-
             while i < len(expr):
-                if expr[i].isnumeric():
-                    if val is None:
-                        val = 0
-                    val = val * 10 + int(expr[i])
+                if s[i].isdigit():
+                    acc = 0
+                    while i < len(expr) and s[i].isdigit():
+                        acc = acc * 10 + int(s[i])
+                        i += 1
+                    yield acc
+                elif s[i] != ' ':
+                    yield s[i]
+                    i += 1
+                else:
+                    i += 1
 
-                elif expr[i] == " ":
-                    if val is not None:
-                        yield val
-                        val = None
+        saved = []
+        plusminus = []
 
-                else:  # expr[i] is in '*/-+'
-                    if val is not None:
-                        yield val
-                        val = None
-                    yield expr[i]
+        tokens = tokenize(s)
 
-                i += 1
-
-            if val is not None:
-                yield val
-
-        ops = {
-            '+': lambda a, b: a + b,
-            '-': lambda a, b: a - b,
-            '*': lambda a, b: a * b,
-            '/': lambda a, b: a // b
-        }
-
-        operators = []  # max length one, + or -
-        operands = []  # max length 2
-
-        tokeniter = tokengen(s)
-        for t in tokeniter:
+        for t in tokens:
             if type(t) == int:
-                # only handled here if previous token was a +- or this is the start
-                operands.append(t)
-            elif t in '+-':
-                if operators:
-                    # apply what's currently on the stack first
-                    b = operands.pop()
-                    a = operands.pop()
-                    tmp = ops[operators.pop()](a, b)
-                    # add result back to stack
-                    operands.append(tmp)
-                # add op to stack
-                operators.append(t)
-            else:  # / or *
-                tmp = ops[t](operands.pop(), next(tokeniter))
-                operands.append(tmp)
+                saved.append(t)
+            else:
+                # operator, so we'll def have another token after (2nd operand)
+                operand2 = next(tokens)
+                if t == '*':
+                    saved[-1] *= operand2
+                elif t == '/':
+                    saved[-1] //= operand2
+                elif t == '+' or t == '-':
+                    if plusminus:
+                        # process the previous plus/minus op to avoid building up stack
+                        saved[0] = plusminus.pop()(saved[0], saved.pop())
+                    saved.append(operand2)
+                    if t == '+':
+                        plusminus.append(lambda x, y: x + y)
+                    else:
+                        plusminus.append(lambda x, y: x - y)
 
-        if operators:
-            b = operands.pop()
-            a = operands.pop()
-            tmp = ops[operators.pop()](a, b)
-            operands.append(tmp)
-        return operands[0]
+        if plusminus:
+            return plusminus[0](saved[0], saved[1])
+
+        return saved[0]
+
+
+"""
+Online soln. Pretty elegant, but I don't think it's intuitive and derivable in 20m.
+"""
+
+
+class Solution:
+    def calculate(self, s: str) -> int:
+        curr_res = 0
+        res = 0
+        num = 0
+        op = "+"  # keep the last operator we have seen
+
+        # append a "+" sign at the end because we can catch the very last item
+        for ch in s + "+":
+            if ch.isdigit():
+                num = 10 * num + int(ch)
+
+            # if we have a symbol, we would start to calculate the previous part.
+            # note that we have to catch the last chracter since there will no sign afterwards to trigger calculation
+            if ch in ("+", "-", "*", "/"):
+                if op == "+":
+                    curr_res += num
+                elif op == "-":
+                    curr_res -= num
+                elif op == "*":
+                    curr_res *= num
+                elif op == "/":
+                    # in python if there is a negative number, we should alway use int() instead of //
+                    curr_res = int(curr_res / num)
+
+                # if the chracter is "+" or "-", we do not need to worry about
+                # the priority so that we can add the curr_res to the eventual res
+                if ch in ("+", "-"):
+                    res += curr_res
+                    curr_res = 0
+
+                op = ch
+                num = 0
+
+        return res
+
+
+print(Solution().calculate("1-2*3"))

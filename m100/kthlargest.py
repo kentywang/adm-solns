@@ -48,4 +48,75 @@ class Solution:
                 lo = pividx + 1
 
 
+# 9:20 - 9:52 (32m)
+# k=1 => 6
+# k=2 => 5
+# k=3,4,5 => 4
+# [3,2,1,4,5,4,6,4]
+#        ^
+#                 ^
+""" 
+             k
+        [1,2,3]
+slow         ^
+fast       ^
+piv          ^
+"""
+
+
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        def lomuto_partition(i, j):
+            piv = j
+            slow = i
+            for fast in range(i, j):
+                # <= :: makes pivot the largest of its val
+                # < :: makes pivot smallest of its val
+                if nums[fast] <= nums[piv]:
+                    nums[fast], nums[slow] = nums[slow], nums[fast]
+                    slow += 1
+            nums[piv], nums[slow] = nums[slow], nums[piv]
+            return slow
+
+        i = 0
+        j = len(nums) - 1
+        k = len(nums) - k  # reverse the k, make k = 0 mean smallest el
+        while i < j:
+            piv = lomuto_partition(i, j)
+            if piv == k:
+                break
+            if piv > k:
+                j = piv - 1
+            elif piv < k:
+                i = piv + 1
+
+        return nums[k]
+
+
+# -----------------------------> k = 3 - 1 = 2     , piv = 0
+
+
+# 9:55 - 10:01 (6m)
+from heapq import heapify, heappop
+
+"""
+[-6,3,2,1,5,6,4], k = 2
+
+Time: O(n + k lg n)
+Space: O(n)
+"""
+
+
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        pq = [-1 * x for x in nums]
+        heapify(pq)
+
+        while k:
+            res = heappop(pq)
+            k -= 1
+
+        return -1 * res
+
+
 print(Solution().findKthLargest([5, 2, 7, 3, 1, 9, 4, 6, 8, 0], 9))
