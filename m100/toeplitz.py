@@ -49,5 +49,11 @@ class Solution:
             if i - 1 >= 0 and j - 1 >= 0
         )
 
+    # 18:23
+    def isToeplitzMatrix3(self, matrix: List[List[int]]) -> bool:
+        return all(matrix[i][j] == matrix[i - 1][j - 1]
+                   for i in range(1, len(matrix))
+                   for j in range(1, len(matrix[0])))
 
-print(Solution().isToeplitzMatrix([[1, 2, 3, 4], [5, 1, 2, 3], [9, 5, 1, 2]]))
+
+print(Solution().isToeplitzMatrix3([[1, 2, 3, 4], [5, 1, 2, 3], [9, 5, 1, 2]]))

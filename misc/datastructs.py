@@ -62,36 +62,65 @@ class DSUElement:
     weight = 1
 
 
-class DSU:
-    def __init__(self):
-        self.parent = {}
+# class DSU:
+#     def __init__(self):
+#         self.parent = {}
+#
+#     def union_sets(self, x, y):
+#         a = self.find_root(x)
+#         b = self.find_root(y)
+#
+#         if a != b:
+#             if self.parent[a].weight > self.parent[b].weight:
+#                 self.parent[b].root = self.parent[a].root
+#                 self.parent[a].weight += self.parent[b].weight
+#             else:
+#                 self.parent[a].root = self.parent[b].root
+#                 self.parent[b].weight += self.parent[a].weight
+#
+#     def find_root(self, x):
+#         if x not in self.parent:
+#             self.parent[x] = DSUElement(x)
+#
+#         if self.parent[x].root == x:
+#             return x
+#
+#         self.parent[x].root = self.find_root(self.parent[x].root)
+#         return self.parent[x].root
+#
+# dsu = DSU()
+# dsu.union_sets('a', 'b')
+# dsu.union_sets('c', 'b')
+# dsu.union_sets('d', 'c')
+# dsu.union_sets('b', 'k')
+# print(dsu.find_root('d'))
 
-    def union_sets(self, x, y):
-        a = self.find_root(x)
-        b = self.find_root(y)
+def dsu(n):
+    parent = list(range(n))
+    rank = [1] * n
 
-        if a != b:
-            if self.parent[a].weight > self.parent[b].weight:
-                self.parent[b].root = self.parent[a].root
-                self.parent[a].weight += self.parent[b].weight
+    def find(x):
+        while x != parent[x]:
+            parent[x] = parent[parent[x]]  # Path compression
+            x = parent[x]
+        return x
+
+    def union(x, y):
+        if (a := find(x)) != (b := find(y)):  # union by rank
+            if rank[a] < rank[b]:
+                parent[a] = b
+                rank[b] += rank[a]
             else:
-                self.parent[a].root = self.parent[b].root
-                self.parent[b].weight += self.parent[a].weight
+                parent[b] = a
+                rank[a] += rank[b]
 
-    def find_root(self, x):
-        if x not in self.parent:
-            self.parent[x] = DSUElement(x)
-
-        if self.parent[x].root == x:
-            return x
-
-        self.parent[x].root = self.find_root(self.parent[x].root)
-        return self.parent[x].root
+    return find, union, parent, rank
 
 
-dsu = DSU()
-dsu.union_sets('a', 'b')
-dsu.union_sets('c', 'b')
-dsu.union_sets('d', 'c')
-dsu.union_sets('b', 'k')
-print(dsu.find_root('d'))
+find, union, par, rnk = dsu(6)
+union(1, 2)
+union(2, 3)
+union(4, 5)
+print(find(3))
+print(find(4))
+print(par, rnk)
